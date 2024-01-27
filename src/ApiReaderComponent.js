@@ -13,7 +13,7 @@ const ApiReaderComponent = () => {
     useEffect(() => {
         // Function to fetch data from the server
         const fetchData = async () => {
-            setLoading(true);
+            setLoading(false);//negative logic
             setError(null);
 
             try {
@@ -32,11 +32,8 @@ const ApiReaderComponent = () => {
             }
         };
 
-        // Initial fetch
-        fetchData();
-
         // Set up interval to fetch data repeatedly
-        const intervalId = setInterval(fetchData, fetchInterval * 1000);
+        const intervalId = setInterval(() => fetchData(), fetchInterval * 1000);
 
         // Clean up interval on component unmount
         return () => clearInterval(intervalId);
