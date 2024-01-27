@@ -42,6 +42,19 @@ const ApiReaderComponent = () => {
         return () => clearInterval(intervalId);
     }, [path, fetchInterval]); // Dependencies array, re-run effect if these values change
 
+    // Function to handle Enter key press for path update
+    const handlePathKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleUpdatePath();
+        }
+    };
+
+    // Function to handle Enter key press for fetch interval update
+    const handleIntervalKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleUpdateFetchInterval();
+        }
+    };
     // Function to handle path update
     const handleUpdatePath = () => {
         setPath(newPath);
@@ -63,6 +76,7 @@ const ApiReaderComponent = () => {
                     id="pathInput"
                     value={newPath}
                     onChange={(e) => setNewPath(e.target.value)}
+                    onKeyDown={handlePathKeyPress} // Use onKeyDown instead of onKeyPress
                 />
                 <button onClick={handleUpdatePath}>Update Path</button>
             </div>
@@ -73,7 +87,8 @@ const ApiReaderComponent = () => {
                     type="number"
                     id="intervalInput"
                     value={fetchInterval}
-                    onChange={handleUpdateFetchInterval}
+                    onChange={(e) => setFetchInterval(parseInt(e.target.value, 10))}
+                    onKeyDown={handleUpdateFetchInterval}
                 />
             </div>
 
