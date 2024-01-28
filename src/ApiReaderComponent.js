@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import GaugeMeterSvg from './svg/gauge_meter.svg';
 import {serverPort, serverUrl} from './utils.js';
 import SVG from 'react-inlinesvg';
+import * as d3 from "d3";
+
 
 const ApiReaderComponent = () => {
     const [value, setValue] = useState(null);
@@ -50,11 +52,13 @@ const ApiReaderComponent = () => {
             const needleGroupValue = svgElement.querySelector('#needleGroup ');
 
             if (textValueTspan) {
+                rulerFillerValue.style.transition = 'transform 1.0s ease-in-out';
                 textValueTspan.textContent = value.toString();
             }
             if (rulerFillerValue) {
                 // Convert the percentage to stroke-dasharray value
                 const strokeDasharrayValue = (value / 100) * 471;
+                rulerFillerValue.style.transition = 'stroke-dasharray  1s ease-in-out';
                 rulerFillerValue.style.strokeDasharray = `${strokeDasharrayValue} 628`;
                 value === 0 ? rulerFillerValue.style.strokeWith= 0: rulerFillerValue.style.strokeWith = 20;
             }
@@ -69,6 +73,7 @@ const ApiReaderComponent = () => {
                 const rotation = minAngle + ((maxAngle - minAngle) * (value - minValue)) / (maxValue - minValue);
 
                 // Set the rotation using CSS
+                needleGroupValue.style.transition = 'transform 1s ease-in-out';
                 needleGroupValue.style.transform = `rotate(${rotation}deg)`;
             }
 

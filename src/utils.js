@@ -3,6 +3,6 @@ export const targetApiUrl = "http://localhost";
 export const originUrl = "http://localhost";
 export const serverUrl = "http://localhost";
 export const serverPort = 5000;
-export const originPort = 3005;
+export const originPort = 3006;
 
 export const targetPort=3003;
