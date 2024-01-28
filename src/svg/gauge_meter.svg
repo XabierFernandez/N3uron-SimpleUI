@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="meter" width="400" height="300" >
+    <rect x="0" y="0" width="400" height="300" rx="14" fill="#4F80E1" />
+    <rect x="25" y="25" width="350" height="250" rx="14" fill="#6392EF" />
+    <!-- Group to apply the rotation -->
+    <g id="ruler" transform="rotate(135, 200, 175)">
+        <!-- Outter circle -->
+        <circle id="outter" r="100" cx="200" cy="175" stroke="#4c83f1" stroke-width="20" stroke-linecap="round"
+                stroke-dasharray="471, 628" fill="none">
+        </circle>
+
+        <!-- Inner circle-->
+        <circle id="inner" r="100" cx="200" cy="175" stroke="#F2A71B" stroke-width="20" stroke-linecap="round"
+                stroke-dasharray="0, 628" fill="none">
+        </circle>
+        <!-- Ruler -->
+        <circle id="innerRuler" r="85" cx="200" cy="175" stroke="#F2F2F2" stroke-width="2"
+                stroke-dasharray="399, 533" fill="none">
+        </circle>
+    </g>
+
+    <g id="rulerNumbers" >
+
+    </g>
+
+    <g id="needleGroup" transform-origin="200px 175px" transform="translate(0, 0) rotate(-50)">
+        <!-- Small circle at the center -->
+        <circle cx="200" cy="175" r="35" fill="#152A4E" />
+
+        <!-- Needle -->
+        <polygon points="190,285 200,245 210,285" transform="translate(-125, 0) rotate(-90, 200, 175)" fill="#152A4E" />
+    </g>
+    <text id="textValue" x="0" y="0" transform="translate(0, 0)" fill="#F2F2F2" stroke-opacity="0" stroke="#000000"
+          stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" letter-spacing="0"
+          style="text-align: center;font-family: Arial;font-size: 16;font-weight: 700;">
+        <!-- Adjusted position of tspan to the center -->
+        <tspan x="200" y="185" text-anchor="middle">0</tspan>
+    </text>
+    <text id="title" x="0" y="0" transform="translate(0, 0)" fill="#F2F2F2" stroke-opacity="0" stroke="#000000"
+          stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" letter-spacing="0"
+          style="text-align: center;font-family: Arial;font-size: 26;font-weight: 700;">
+        <!-- Adjusted position of tspan to the center -->
+        <tspan x="200" y="55" text-anchor="middle">Title</tspan>
+    </text>
+    <text id="units" x="0" y="0" transform="translate(0, 0)" fill="#F2F2F2" stroke-opacity="0" stroke="#000000"
+          stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" letter-spacing="0"
+          style="text-align: center;font-family: Arial;font-size: 20;font-weight: 700;">
+        <!-- Adjusted position of tspan to the center -->
+        <tspan x="200" y="255" text-anchor="middle">Units</tspan>
+    </text>
+</svg>

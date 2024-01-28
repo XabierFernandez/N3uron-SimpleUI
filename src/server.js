@@ -1,17 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
+import {apiKey, originUrl,originPort, serverPort, targetApiUrl, targetPort} from './utils.js';
 
-const PORT = 5000;
 const app = express();
 
-
 const corsOptions = {
-    origin: "http://localhost:3005",
+    origin: `${originUrl}:${originPort}`,
 };
 app.use(cors(corsOptions)); // Enable CORS for the specified origin
 
-const targetApiUrl = "http://localhost:3003";
 
 app.get('/tag', async (req, res) => {
     const { cmd, path } = req.query;
@@ -19,11 +17,11 @@ app.get('/tag', async (req, res) => {
         const fetchOptions = {
             method: 'GET',
             headers: {
-                'Authorization':'Bearer ptwlseLo5TpBLEAH7jKVQF7KWeZCUKmQwG6-YF4hQyJAxQ6NGGTz68i_yg-UA4CD',
+                'Authorization':`Bearer ${apiKey}`,
             },
         };
 
-        const response = await fetch(`${targetApiUrl}/tag?cmd=${cmd}&path=${path}`, fetchOptions);
+        const response = await fetch(`${targetApiUrl}:${targetPort}/tag?cmd=${cmd}&path=${path}`, fetchOptions);
 
         if (response.ok) {
             const contentType = response.headers.get('Content-Type');
@@ -42,6 +40,6 @@ app.get('/tag', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Express server listening at http://localhost:${PORT}`);
+app.listen(serverPort, () => {
+    console.log(`Express server listening at http://localhost:${serverPort}`);
 });

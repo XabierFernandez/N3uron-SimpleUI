@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import GaugeMeterSvg from './svg/gauge_meter.svg';
+import {serverPort, serverUrl} from './utils.js';
+import SVG from 'react-inlinesvg';
 
 const ApiReaderComponent = () => {
     const [value, setValue] = useState(null);
@@ -17,7 +20,7 @@ const ApiReaderComponent = () => {
             setError(null);
 
             try {
-                const response = await fetch(`http://localhost:5000/tag?cmd=read&path=${path}`);
+                const response = await fetch(`${serverUrl}:${serverPort}/tag?cmd=read&path=${path}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -38,6 +41,39 @@ const ApiReaderComponent = () => {
         // Clean up interval on component unmount
         return () => clearInterval(intervalId);
     }, [path, fetchInterval]); // Dependencies array, re-run effect if these values change
+
+    useEffect(() => {
+        const svgElement = document.getElementById('gaugeMeterSvg');
+        if (svgElement) {
+            const textValueTspan = svgElement.querySelector('#textValue tspan');
+            const rulerFillerValue = svgElement.querySelector('#inner');
+            const needleGroupValue = svgElement.querySelector('#needleGroup ');
+
+            if (textValueTspan) {
+                textValueTspan.textContent = value.toString();
+            }
+            if (rulerFillerValue) {
+                // Convert the percentage to stroke-dasharray value
+                const strokeDasharrayValue = (value / 100) * 471;
+                rulerFillerValue.style.strokeDasharray = `${strokeDasharrayValue} 628`;
+                value === 0 ? rulerFillerValue.style.strokeWith= 0: rulerFillerValue.style.strokeWith = 20;
+            }
+            if (needleGroupValue) {
+                // Set your minimum and maximum values here
+                const minValue = 0;
+                const maxValue = 100;
+
+                const minAngle = -50; // 0% angle
+                const maxAngle = 230; // 100% angle
+
+                const rotation = minAngle + ((maxAngle - minAngle) * (value - minValue)) / (maxValue - minValue);
+
+                // Set the rotation using CSS
+                needleGroupValue.style.transform = `rotate(${rotation}deg)`;
+            }
+
+        }
+    }, [value]);
 
     // Function to handle Enter key press for path update
     const handlePathKeyPress = (event) => {
@@ -65,7 +101,9 @@ const ApiReaderComponent = () => {
     return (
         <div>
             <h2>API Response</h2>
-
+            <div>
+                <SVG src={GaugeMeterSvg} id="gaugeMeterSvg" style={{ width: '100%', height: '100%' }} />
+            </div>
             <div>
                 <label htmlFor="pathInput">Path:</label>
                 <input
@@ -85,9 +123,10 @@ const ApiReaderComponent = () => {
                     id="intervalInput"
                     value={fetchInterval}
                     onChange={(e) => setFetchInterval(parseInt(e.target.value, 10))}
-                    onKeyDown={handleUpdateFetchInterval}
+                    onKeyDown={handleIntervalKeyPress}
                 />
             </div>
+
 
             {loading ? (
                 <p>Loading data...</p>
